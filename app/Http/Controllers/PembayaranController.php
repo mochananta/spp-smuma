@@ -8,6 +8,7 @@ use App\Models\TahunAjaran;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\Tagihan;
+use App\Models\TransaksiMidtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,8 +20,16 @@ class PembayaranController extends Controller
 
         $siswa = Siswa::with(['rombel', 'jurusan', 'tahunAjaran'])->where('user_id', $user->id)->firstOrFail();
 
+        $dibayarTagihanIds = TransaksiMidtrans::where('user_id', $user->id)
+            ->where('status', 'settlement')
+            ->pluck('tagihan_ids')
+            ->flatMap(function ($ids) {
+                return json_decode($ids, true);
+            })->unique()->toArray();
+
         $tagihans = Tagihan::where('siswa_id', $siswa->id)
-            ->where('kategori_pembayaran_id', 2) // 2 = Ujian
+            ->where('kategori_pembayaran_id', 2) 
+            ->whereNotIn('id', $dibayarTagihanIds)
             ->get();
 
         return view('siswa.pembayaran.ujian', compact('siswa', 'tagihans'));
@@ -33,8 +42,16 @@ class PembayaranController extends Controller
 
         $siswa = Siswa::with(['rombel', 'jurusan', 'tahunAjaran'])->where('user_id', $user->id)->firstOrFail();
 
+        $dibayarTagihanIds = TransaksiMidtrans::where('user_id', $user->id)
+            ->where('status', 'settlement')
+            ->pluck('tagihan_ids')
+            ->flatMap(function ($ids) {
+                return json_decode($ids, true);
+            })->unique()->toArray();
+
         $tagihans = Tagihan::where('siswa_id', $siswa->id)
-            ->where('kategori_pembayaran_id', 1) // misal 1 = SPP
+            ->where('kategori_pembayaran_id', 1)
+            ->whereNotIn('id', $dibayarTagihanIds)
             ->get();
 
         return view('siswa.pembayaran.spp', compact('siswa', 'tagihans'));
@@ -108,7 +125,7 @@ class PembayaranController extends Controller
     public function riwayat($id)
     {
         $siswa = Siswa::findOrFail($id);
-        $pembayarans = Pembayaran::with('kategoriPembayaran') 
+        $pembayarans = Pembayaran::with('kategoriPembayaran')
             ->where('siswa_id', $id)
             ->orderBy('tanggal_bayar', 'desc')
             ->get();

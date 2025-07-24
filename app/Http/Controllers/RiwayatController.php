@@ -20,9 +20,9 @@ class RiwayatController extends Controller
             })
             ->get();
 
-        $riwayat = Pembayaran::with(['tagihan.kategori'])
+        $riwayat = Pembayaran::with('kategoriPembayaran')
             ->where('siswa_id', $siswaId)
-            ->whereHas('tagihan.kategori', function ($q) {
+            ->whereHas('kategoriPembayaran', function ($q) {
                 $q->where('kategori', 'spp');
             })
             ->get();
@@ -41,9 +41,9 @@ class RiwayatController extends Controller
             })
             ->get();
 
-        $riwayat = Pembayaran::with(['tagihan.kategori'])
+        $riwayat = Pembayaran::with('kategoriPembayaran')
             ->where('siswa_id', $siswaId)
-            ->whereHas('tagihan.kategori', function ($q) {
+            ->whereHas('kategoriPembayaran', function ($q) {
                 $q->where('kategori', 'ujian');
             })
             ->get();
@@ -59,7 +59,6 @@ class RiwayatController extends Controller
             ->where('siswa_id', $siswaId)
             ->get();
 
-        // Hitung total nominal dari seluruh pembayaran
         $totalPembayaran = $riwayat->sum('nominal');
 
         return view('siswa.riwayat.riwayat-total', compact('riwayat', 'totalPembayaran'));

@@ -62,7 +62,7 @@
                     </svg>
                 </span>
                 <input type="text" class="form-control" placeholder="Cari..." aria-label="search"
-                    aria-describedby="search">
+                    aria-describedby="search" id="searchInput">
             </div>
 
             <div class="d-flex gap-2 ms-3">
@@ -363,11 +363,16 @@
             html2pdf().set(opt).from(element).save();
         });
 
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            document.querySelectorAll('tbody tr').forEach(function(row) {
-                const rowText = row.innerText.toLowerCase();
-                row.style.display = rowText.includes(filter) ? '' : 'none';
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(function(row) {
+                    const rowText = row.textContent.toLowerCase();
+                    row.style.display = rowText.includes(filter) ? '' : 'none';
+                });
             });
         });
     </script>
