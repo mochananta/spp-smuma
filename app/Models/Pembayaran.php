@@ -13,11 +13,13 @@ class Pembayaran extends Model
 
     protected $fillable = [
         'siswa_id',
-        'rombel_id',
-        'jurusan_id',
+        'kategori_pembayaran_id',
         'tahun_ajaran_id',
-        'opsional',
-        'status'
+        'bulan',
+        'tanggal_bayar',
+        'kode',
+        'nominal',
+        'keterangan',
     ];
 
     public function siswa()

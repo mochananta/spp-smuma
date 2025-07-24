@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kategori_pembayarans', function (Blueprint $table) {
             $table->id();
             $table->string('kategori');
-            $table->char('nominal');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }

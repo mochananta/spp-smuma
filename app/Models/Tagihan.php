@@ -16,7 +16,8 @@ class Tagihan extends Model
         'bulan',
         'nominal',
         'kelas',
-        'foto'
+        'foto',
+        'status',
     ];
 
     public function siswa()
@@ -32,10 +33,5 @@ class Tagihan extends Model
     public function tahunAjaran()
     {
         return $this->belongsTo(TahunAjaran::class);
-    }
-
-    public function tunggakan()
-    {
-        return $this->hasOne(Tunggakan::class);
     }
 }

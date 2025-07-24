@@ -1,11 +1,10 @@
 @extends('admin.dashboardsmuma')
 
 @section('content')
-
-    <div class="container">
-        <h4 class="mb-4">Data Siswa</h4>
-
-        <!-- Filter dan Tindakan -->
+    <div class="container-fluid mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="mb-0">Data Siswa</h2>
+        </div>
         <form id="form-tindakan" method="POST" action="{{ route('siswa.pindah') }}">
             @csrf
             <div class="row mb-3 align-items-end">
@@ -33,11 +32,10 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label d-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary w-100">Pindahkan Siswa</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
 
-            <!-- Tabel Siswa -->
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
                     <thead>
@@ -66,7 +64,6 @@
                                 </td>
                             </tr>
 
-                            <!-- Modal Detail Siswa -->
                             <div class="modal fade" id="detailSiswa{{ $siswa->id }}" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -92,10 +89,9 @@
     </div>
 @endsection
 
-@push('scripts')
+@push('myscript')
     <script>
-        // Filter pencarian
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             const keyword = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(row => {
                 const text = row.textContent.toLowerCase();
@@ -103,8 +99,7 @@
             });
         });
 
-        // Checkbox All
-        document.getElementById('checkAll').addEventListener('change', function () {
+        document.getElementById('checkAll').addEventListener('change', function() {
             const status = this.checked;
             document.querySelectorAll('input[name="ids[]"]').forEach(cb => cb.checked = status);
         });

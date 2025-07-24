@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['admin', 'siswa'])->default('siswa');
-            $table->char('nip', 20)->nullable(); // nullable
+            $table->char('nis', 20)->nullable(); // nullable
             $table->char('telepon', 15)->nullable(); // nullable
             $table->text('alamat')->nullable(); // nullable
             $table->string('password');

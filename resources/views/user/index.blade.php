@@ -39,15 +39,11 @@
                 <a href="{{ asset('template/template_siswa.xlsx') }}" class="btn btn-success btn-sm d-block" download>
                     <i class="fa fa-download me-1"></i> Download Template
                 </a>
-                <small class="form-text text-muted">
-                    Download template untuk impor data siswa.
-                </small>
             </div>
 
-
             <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                <input type="file" class="form-control" name="file" accept=".csv" required style="max-width: 250px;">
-
+                <input type="file" class="form-control" name="file" accept=".csv, .xlsx" required
+                    style="max-width: 250px;">
                 <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
                     <ion-icon name="cloud-download-outline"></ion-icon> Import
                 </button>
@@ -57,7 +53,6 @@
         <div class="d-flex align-items-center gap-2 mb-3">
             <div class="input-group" style="width: 300px;">
                 <span class="input-group-text">
-                    <!-- Ikon search -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="icon icon-tabler icons-tabler-outline icon-tabler-search">
@@ -71,8 +66,8 @@
             </div>
 
             <div class="d-flex gap-2 ms-3">
-                <button class="btn btn-outline-dark btn-sm">Print</button>
-                <button class="btn btn-outline-dark btn-sm">PDF</button>
+                <button class="btn btn-outline-dark btn-sm" id="btnPrint">Print</button>
+                <button class="btn btn-outline-dark btn-sm" id="btnPDF">PDF</button>
             </div>
         </div>
 
@@ -84,7 +79,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox" id="checkAll">
+                                    <input type="checkbox" id="checkAllSiswa">
                                 </th>
                                 <th>ID</th>
                                 <th>Nama</th>
@@ -97,7 +92,8 @@
                         <tbody>
                             @foreach ($siswas as $siswa)
                                 <tr>
-                                    <td><input type="checkbox" name="ids[]" value="{{ $siswa->id }}"></td>
+                                    <td><input type="checkbox" class="check-item" name="ids[]"
+                                            value="{{ $siswa->id }}"></td>
                                     <td>{{ $siswa->id }}</td>
                                     <td>{{ $siswa->nama }}</td>
                                     <td>{{ $siswa->nis }}</td>
@@ -120,9 +116,9 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
+
     </div>
     <div class="modal fade" id="detailSiswaModal" tabindex="-1" aria-labelledby="detailSiswaModalLabel"
         aria-hidden="true">
@@ -153,12 +149,10 @@
 
                     <div class="modal-body">
                         <div class="row">
-                            <!-- Nama -->
                             <div class="col-md-6 mb-3">
                                 <label>Nama</label>
                                 <input type="text" class="form-control" name="nama" required>
                             </div>
-                            <!-- NIS -->
                             <div class="col-md-6 mb-3">
                                 <label>NIS</label>
                                 <input type="text" class="form-control" name="nis" required>
@@ -166,12 +160,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Email -->
                             <div class="col-md-6 mb-3">
                                 <label>Email</label>
                                 <input type="email" class="form-control" name="email" required>
                             </div>
-                            <!-- Agama -->
                             <div class="col-md-6 mb-3">
                                 <label>Agama</label>
                                 <select class="form-control" name="agama" required>
@@ -185,12 +177,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Tempat Lahir -->
                             <div class="col-md-6 mb-3">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir" required>
                             </div>
-                            <!-- Tanggal Lahir -->
                             <div class="col-md-6 mb-3">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tanggal_lahir" required>
@@ -198,7 +188,6 @@
                         </div>
 
                         <div class="row">
-                            <!-- Jenis Kelamin -->
                             <div class="col-md-6 mb-3">
                                 <label>Jenis Kelamin</label>
                                 <div class="d-flex gap-3">
@@ -214,7 +203,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Telepon Siswa -->
                             <div class="col-md-6 mb-3">
                                 <label>Telepon Siswa</label>
                                 <input type="text" class="form-control" name="telepon" required>
@@ -222,12 +210,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Nama Ortu -->
                             <div class="col-md-6 mb-3">
                                 <label>Nama Orang Tua</label>
                                 <input type="text" class="form-control" name="nama_ortu" required>
                             </div>
-                            <!-- Telepon Ortu -->
                             <div class="col-md-6 mb-3">
                                 <label>Telepon Orang Tua</label>
                                 <input type="text" class="form-control" name="telepon_ortu" required>
@@ -235,7 +221,6 @@
                         </div>
 
                         <div class="row">
-                            <!-- Kelas / Rombel -->
                             <div class="col-md-6 mb-3">
                                 <label>Kelas</label>
                                 <select name="rombel_id" class="form-control" required>
@@ -245,7 +230,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- Jurusan -->
                             <div class="col-md-6 mb-3">
                                 <label>Jurusan</label>
                                 <select name="jurusan_id" class="form-control" required>
@@ -258,7 +242,6 @@
                         </div>
 
                         <div class="row">
-                            <!-- Tahun Ajaran -->
                             <div class="col-md-6 mb-3">
                                 <label>Tahun Ajaran</label>
                                 <select name="tahun_ajaran_id" class="form-control" required>
@@ -269,7 +252,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- Alamat -->
                             <div class="col-md-6 mb-3">
                                 <label>Alamat</label>
                                 <input type="text" class="form-control" name="alamat" required>
@@ -277,12 +259,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Password -->
                             <div class="col-md-6 mb-3">
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password" required>
                             </div>
-                            <!-- Foto -->
                             <div class="col-md-6 mb-3">
                                 <label>Unggah Foto</label>
                                 <input type="file" name="foto" class="form-control" required>
@@ -311,26 +291,27 @@
                 $('#modalBodyContent').html('Loading...');
                 $.get(url, function(data) {
                     $('#modalBodyContent').html(data);
-
                 }).fail(function() {
                     $('#modalBodyContent').html('<p>Gagal memuat data.</p>');
                 });
             });
+
+            const checkAllSiswa = document.getElementById('checkAllSiswa');
+            const checkboxes = document.querySelectorAll('input[name="ids[]"]');
+            if (checkAllSiswa) {
+                checkAllSiswa.addEventListener('change', function() {
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                });
+            }
         });
 
-
-        document.getElementById('select-all').addEventListener('change', function(e) {
-            let checkboxes = document.querySelectorAll('input[name="siswa_ids[]"]');
-            checkboxes.forEach(cb => cb.checked = e.target.checked);
-        });
-    </script>
-    <script>
         document.getElementById('btn-tambah-data').addEventListener('click', function() {
             var myModal = new bootstrap.Modal(document.getElementById('modalCreateUser'), {
                 keyboard: false
             });
             myModal.show();
         });
+
         document.querySelector('.file-upload-browse').addEventListener('click', function() {
             let fileInput = this.closest('.form-group').querySelector('.file-upload-default');
             fileInput.click();
@@ -339,6 +320,55 @@
         document.querySelector('.file-upload-default').addEventListener('change', function() {
             let fileName = this.value.split('\\').pop();
             this.closest('.form-group').querySelector('.file-upload-info').value = fileName;
+        });
+    </script>
+
+    <script>
+        document.getElementById('btnPrint').addEventListener('click', function() {
+            const content = document.querySelector('.table-responsive').innerHTML;
+            const newWindow = window.open('', '', 'height=800,width=1200');
+            newWindow.document.write('<html><head><title>Print Siswa</title>');
+            newWindow.document.write(
+                '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">'
+            );
+            newWindow.document.write('</head><body>');
+            newWindow.document.write('<h3 class="text-center mb-4">Daftar Siswa</h3>');
+            newWindow.document.write('<div class="container">');
+            newWindow.document.write(content);
+            newWindow.document.write('</div></body></html>');
+            newWindow.document.close();
+            newWindow.focus();
+            newWindow.print();
+            newWindow.close();
+        });
+
+        document.getElementById('btnPDF').addEventListener('click', function() {
+            const element = document.querySelector('.table-responsive');
+            const opt = {
+                margin: 0.5,
+                filename: 'daftar-siswa.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait'
+                }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('tbody tr').forEach(function(row) {
+                const rowText = row.innerText.toLowerCase();
+                row.style.display = rowText.includes(filter) ? '' : 'none';
+            });
         });
     </script>
 @endpush

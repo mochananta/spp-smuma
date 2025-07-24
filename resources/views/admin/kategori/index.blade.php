@@ -91,8 +91,9 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="nominal" class="form-label">Nominal</label>
-                                                            <input type="text" class="form-control" name="nominal"
-                                                                value="{{ $kategori_pembayaran->nominal }}" required>
+                                                            <input type="number" class="form-control" name="nominal"
+                                                                value="{{ $kategori_pembayaran->nominal }}" step="1"
+                                                                required>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -154,9 +155,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nominal">Nominal</label>
-                                <input type="text" name="nominal" class="form-control" placeholder="" required>
+                                <input type="number" name="nominal" class="form-control" placeholder="" step="1" required>
                             </div>
-
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

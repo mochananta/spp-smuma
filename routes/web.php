@@ -3,14 +3,18 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KategoriPembayaranController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RombelController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SnapController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\TingkatController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,11 +50,10 @@ Route::get('/redirect', function () {
 
 
 
-// Route untuk admin
+
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     //crud siswa
     Route::get('/user', [SiswaController::class, 'user'])->name('user.index');
     Route::get('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran.index');
@@ -72,6 +75,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
     Route::post('/siswa/pindah', [SiswaController::class, 'pindah'])->name('siswa.pindah');
 
+    Route::get('/laporanspp', [LaporanController::class, 'laporanspp'])->name('admin.laporan.spp');
+    Route::get('/laporanujian', [LaporanController::class, 'laporanujian'])->name('admin.laporan.ujian');
+
+
     // routes/web.php
     Route::get('/siswa/{id}/detail-a4', [SiswaController::class, 'detailA4'])->name('siswa.detailA4');
 
@@ -90,7 +97,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/tingkat/{id}', [TingkatController::class, 'destroy'])->name('tingkat.destroy');
     Route::delete('/rombel/{id}', [RombelController::class, 'destroy'])->name('rombel.destroy');
     Route::delete('/kategori_pembayaran/{id}', [KategoriPembayaranController::class, 'destroy'])->name('kategori.destroy');
-
+    Route::get('/riwayat-pembayaran/{id}', [PembayaranController::class, 'riwayat']);
+    
     Route::post('/pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/siswa/import', [SiswaController::class, 'importForm'])->name('siswa.importForm');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
@@ -113,6 +121,8 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('siswa/riwayat/total', [RiwayatController::class, 'total'])->name('siswa.riwayat.riwayat-total');
 });
 
+Route::post('/snap/bayar', [SnapController::class, 'bayar'])->name('snap.bayar');
+Route::post('/midtrans/callback', [SnapController::class, 'callback']);
 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
