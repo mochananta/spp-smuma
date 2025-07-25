@@ -2,59 +2,56 @@
 
 @section('content')
 <div class="container mt-4">
-  <h5><strong>Pembayaran SPP</strong></h5>
-  <p>Tagihan Sudah Lunas</p>
+    <h4>Tagihan SPP</h4>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Bulan</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($tagihanSpp as $tagihan)
+                    <tr>
+                        <td>{{ $tagihan->bulan }}</td>
+                        <td>Rp {{ number_format($tagihan->nominal) }}</td>
+                        <td>{{ ucfirst($tagihan->status) }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">Tidak ada tagihan SPP.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-  <h6 class="mt-4"><strong>Daftar Tagihan</strong></h6>
-  <table class="table table-bordered">
-    <thead class="table-primary">
-      <tr>
-        <th>Bulan</th>
-        <th>Nominal</th>
-        <th>Dibayar</th>
-        <th>Keterangan</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Juli</td>
-        <td>Rp. 110.000</td>
-        <td>Rp. 110.000</td>
-        <td>Lunas</td>
-      </tr>
-      <tr>
-        <td>Agustus</td>
-        <td>Rp. 110.000</td>
-        <td>Rp. 110.000</td>
-        <td>Lunas</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h6 class="mt-4"><strong>Riwayat Pembayaran</strong></h6>
-  <table class="table table-bordered">
-    <thead class="table-primary">
-      <tr>
-        <th>Tanggal Bayar</th>
-        <th>Jumlah</th>
-        <th>Bulan</th>
-        <th>Keterangan</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>28 Agustus 2024</td>
-        <td>Rp. 110.000</td>
-        <td>Juli</td>
-        <td>Lunas</td>
-      </tr>
-      <tr>
-        <td>28 Agustus 2024</td>
-        <td>Rp. 110.000</td>
-        <td>Agustus</td>
-        <td>Lunas</td>
-      </tr>
-    </tbody>
-  </table>
+    <h5>Riwayat Pembayaran SPP</h5>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Jumlah</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($riwayat as $pembayaran)
+                    <tr>
+                        <td>{{ $pembayaran->tanggal }}</td>
+                        <td>Rp {{ number_format($pembayaran->jumlah) }}</td>
+                        <td>{{ $pembayaran->keterangan ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">Belum ada pembayaran SPP.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

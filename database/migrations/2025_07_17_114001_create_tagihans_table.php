@@ -19,10 +19,10 @@ return new class extends Migration
             $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajarans')->onDelete('cascade');
             $table->string('bulan');
             $table->string('kelas');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->integer('nominal');
             $table->enum('status', ['belum_lunas', 'lunas'])->default('belum_lunas');
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 

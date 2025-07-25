@@ -27,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'nis'
     ];
 
     /**
@@ -40,6 +42,11 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
+
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class);
+    }
 
     /**
      * The attributes that should be cast.

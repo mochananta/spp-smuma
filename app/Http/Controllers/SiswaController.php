@@ -97,6 +97,7 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'nis' => 'required|string|max:20|unique:siswas,nis',
@@ -126,8 +127,9 @@ class SiswaController extends Controller
             $user = User::create([
                 'name' => $validated['nama'],
                 'email' => $validated['email'],
+                'nis' => $validated['nis'],
                 'role' => 'siswa',
-                'password' => bcrypt(value: $validated['password']),
+                'password' => bcrypt($request->password),
             ]);
 
             $validated['user_id'] = $user->id;
@@ -179,7 +181,7 @@ class SiswaController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xls,xlsx',
+            'file' => 'required|file|mimes:xlsx,xls|max:2048',
         ]);
 
         try {

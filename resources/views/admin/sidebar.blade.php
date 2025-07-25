@@ -58,24 +58,35 @@
                                 </div>
 
                                 <!-- Laporan & User -->
-                                <a class="nav-link" href="charts.html">
+                                <!-- Transaksi -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseLaporan" aria-expanded="false"
+                                    aria-controls="collapseLaporan">
                                     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                     Laporan
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
+                                <div class="collapse" id="collapseLaporan" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ route('admin.laporan.spp') }}">SPP</a>
+                                        <a class="nav-link" href="{{ route('admin.laporan.ujian') }}">Ujian</a>
+                                        {{-- <a class="nav-link" href="/kirim_tunggakan">Kirim Tunggakan</a> --}}
+                                    </nav>
+                                </div>
                                 <a class="nav-link" href="/user">
                                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                     User
                                 </a>
 
                                 <!-- Pengaturan -->
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#collapsePengaturan" aria-expanded="false"
                                     aria-controls="collapsePengaturan">
                                     <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                                     Pengaturan
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapsePengaturan" data-bs-parent="#sidenavAccordion">
+                                </a> --}}
+                                {{-- <div class="collapse" id="collapsePengaturan" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
 
                                         <!-- Template Pesan with nested submenu -->
@@ -98,7 +109,7 @@
 
 
                                     </nav>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 

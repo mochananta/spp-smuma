@@ -2,23 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriPembayaran;
 use App\Models\Pembayaran;
 use App\Models\TahunAjaran;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PembayaranController extends Controller
 {
     public function ujian()
     {
-        return view('siswa.pembayaran.ujian');
+        $user = auth()->user();
+
+        $siswa = Siswa::with(['rombel', 'jurusan', 'tahunAjaran'])->where('user_id', $user->id)->firstOrFail();
+
+        $tagihans = Tagihan::where('siswa_id', $siswa->id)
+            ->where('kategori_pembayaran_id', 2) // 2 = Ujian
+            ->get();
+
+        return view('siswa.pembayaran.ujian', compact('siswa', 'tagihans'));
     }
+
 
     public function spp()
     {
-        return view('siswa.pembayaran.spp');
+        $user = auth()->user();
+
+        $siswa = Siswa::with(['rombel', 'jurusan', 'tahunAjaran'])->where('user_id', $user->id)->firstOrFail();
+
+        $tagihans = Tagihan::where('siswa_id', $siswa->id)
+            ->where('kategori_pembayaran_id', 1) // misal 1 = SPP
+            ->get();
+
+        return view('siswa.pembayaran.spp', compact('siswa', 'tagihans'));
     }
 
     public function konfirmasi()
@@ -26,33 +45,58 @@ class PembayaranController extends Controller
         return view('siswa.pembayaran.konfirmasi');
     }
 
-    // public function index()
-    // {
-    //     $pembayarans = Siswa::with(['pembayarans.tahunAjaran', 'rombel', 'tahunAjaran'])->get();
-    //     $tahunAjarans = TahunAjaran::all();
-    //     $rombels = Rombel::all();
-
-    //     return view('admin.pembayaran.index', compact('pembayarans', 'tahunAjarans', 'rombels'));
-    // }
-
     public function pembayaran(Request $request)
     {
-        $tahun = $request->tahun;
+        $tahun = $request->tahun_ajaran_id;
         $rombel = $request->rombel;
 
         $tahun_ajaran = TahunAjaran::all();
         $rombels = Rombel::all();
+        $kategoriPembayarans = KategoriPembayaran::all();
 
         $pembayarans = Siswa::with(['pembayarans', 'rombel', 'tahunAjaran'])
-            ->when($tahun, function ($query, $tahun) {
-                $query->where('tahun_ajaran_id', $tahun);
-            })
-            ->when($rombel, function ($query, $rombel) {
-                $query->where('rombel_id', $rombel);
-            })
+            ->when($tahun, fn($q) => $q->where('tahun_ajaran_id', $tahun))
+            ->when($rombel, fn($q) => $q->where('rombel_id', $rombel))
             ->get();
 
-        return view('admin.pembayaran.index', compact('pembayarans', 'tahun_ajaran', 'rombels', 'tahun', 'rombel'));
+        return view('admin.pembayaran.index', compact(
+            'pembayarans',
+            'tahun_ajaran',
+            'rombels',
+            'kategoriPembayarans',
+            'tahun',
+            'rombel'
+        ));
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'siswa_id' => 'required|exists:siswas,id',
+                'kategori_pembayaran_id' => 'required|exists:kategori_pembayarans,id',
+                'tahun_ajaran_id' => 'required|exists:tahun_ajarans,id',
+                'bulan' => 'required',
+                'tanggal_bayar' => 'required|date',
+                'nominal' => 'required|numeric',
+                'keterangan' => 'nullable|string',
+            ]);
+
+            Pembayaran::create([
+                'siswa_id' => $request->siswa_id,
+                'kategori_pembayaran_id' => $request->kategori_pembayaran_id,
+                'tahun_ajaran_id' => $request->tahun_ajaran_id,
+                'bulan' => $request->bulan,
+                'tanggal_bayar' => $request->tanggal_bayar,
+                'nominal' => $request->nominal,
+                'kode' => Str::uuid(),
+                'keterangan' => $request->keterangan,
+            ]);
+
+            return redirect()->back()->with('success', 'Pembayaran berhasil disimpan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menyimpan pembayaran: ' . $e->getMessage());
+        }
     }
 
     public function tagihan()
@@ -61,24 +105,14 @@ class PembayaranController extends Controller
         return view('admin.tagihan.index', compact('tagihans'));
     }
 
-    public function store(Request $request)
+    public function riwayat($id)
     {
-        $request->validate([
-            'siswa_id' => 'required|exists:siswas,id',
-            'tagihan_id' => 'nullable|exists:tagihans,id',
-            'jumlah' => 'required|numeric|min:0',
-            'tanggal_pembayaran' => 'required|date',
-            'keterangan' => 'nullable|string|max:255',
-        ]);
+        $siswa = Siswa::findOrFail($id);
+        $pembayarans = Pembayaran::with('kategoriPembayaran') 
+            ->where('siswa_id', $id)
+            ->orderBy('tanggal_bayar', 'desc')
+            ->get();
 
-        Pembayaran::create([
-            'siswa_id' => $request->siswa_id,
-            'tagihan_id' => $request->tagihan_id,
-            'jumlah' => $request->jumlah,
-            'tanggal_pembayaran' => $request->tanggal_pembayaran,
-            'keterangan' => $request->keterangan,
-        ]);
-
-        return redirect()->back()->with('success', 'Pembayaran berhasil disimpan.');
+        return view('admin.pembayaran._riwayat', compact('siswa', 'pembayarans'));
     }
 }

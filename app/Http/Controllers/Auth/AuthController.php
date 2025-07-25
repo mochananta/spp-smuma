@@ -11,35 +11,34 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // sesuaikan path login-mu
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
             'role' => ['required', 'in:admin,siswa'],
+            'password' => ['required'],
+            'email' => ['nullable', 'email'], // hanya dipakai admin
+            'nis' => ['nullable'], // hanya dipakai siswa
         ]);
 
-        // Cek kredensial plus role
+        // Tentukan field berdasarkan role
+        $loginField = $credentials['role'] === 'admin' ? 'email' : 'nis';
+        $loginValue = $credentials['role'] === 'admin' ? $credentials['email'] : $credentials['nis'];
+
         if (Auth::attempt([
-            'email' => $credentials['email'],
+            $loginField => $loginValue,
             'password' => $credentials['password'],
-            'role' => $credentials['role']
+            'role' => $credentials['role'],
         ], $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            // Redirect berdasarkan role
-            if (Auth::user()->role === 'admin') {
-                return redirect()->intended('/dashboard');
-            } elseif (Auth::user()->role === 'siswa') {
-                return redirect()->intended('/siswa/beranda');
-            }
+            return redirect()->intended(Auth::user()->role === 'admin' ? '/dashboard' : '/siswa/beranda');
         }
 
         throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
+            $loginField => __('auth.failed'),
         ]);
     }
 
