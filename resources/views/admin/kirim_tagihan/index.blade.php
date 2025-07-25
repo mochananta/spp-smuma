@@ -81,95 +81,95 @@
                                     <th>NO</th>
                                     <th>Nama</th>
                                     <th>NIS</th>
-                                        <th>Kelas</th>
-                                        <th>Tahun</th>
-                                        <th>Tagihan</th>
+                                    <th>Kelas</th>
+                                    <th>Tahun</th>
+                                    <th>Tagihan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($siswas as $siswa)
+                                    <tr>
+                                        <td><input type="checkbox" name="ids[]" value="{{ $siswa->id }}"></td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $siswa->nama }}</td>
+                                        <td>{{ $siswa->nis }}</td>
+                                        <td>{{ $siswa->rombel->rombel }}</td>
+                                        <td>{{ $siswa->tahunAjaran?->tahun_ajaran ?? '-' }}</td>
+                                        <td>
+                                            @if ($siswa->tagihans->isNotEmpty())
+                                                <span class="badge bg-success d-inline-flex align-items-center gap-1">
+                                                    <i class="fa fa-check-circle"></i> Sudah Ada
+                                                </span>
+                                                <button type="button"
+                                                    class="btn btn-sm btn-link text-primary p-0 ms-1 mt-n1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalDetail{{ $siswa->id }}">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </button>
+                                            @else
+                                                <span class="badge bg-warning text-dark">Belum Ada</span>
+                                            @endif
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($siswas as $siswa)
-                                        <tr>
-                                            <td><input type="checkbox" name="ids[]" value="{{ $siswa->id }}"></td>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $siswa->nama }}</td>
-                                            <td>{{ $siswa->nis }}</td>
-                                            <td>{{ $siswa->rombel->rombel }}</td>
-                                            <td>{{ $siswa->tahunAjaran?->tahun_ajaran ?? '-' }}</td>
-                                            <td>
-                                                @if ($siswa->tagihans->isNotEmpty())
-                                                    <span class="badge bg-success d-inline-flex align-items-center gap-1">
-                                                        <i class="fa fa-check-circle"></i> Sudah Ada
-                                                    </span>
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-link text-primary p-0 ms-1 mt-n1"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetail{{ $siswa->id }}">
-                                                        <i class="fa fa-info-circle"></i>
-                                                    </button>
-                                                @else
-                                                    <span class="badge bg-warning text-dark">Belum Ada</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                @foreach ($siswas as $siswa)
-                    @if ($siswa->tagihans->isNotEmpty())
-                        <div class="modal fade" id="modalDetail{{ $siswa->id }}" tabindex="-1"
-                            aria-labelledby="modalDetailLabel{{ $siswa->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-primary text-white">
-                                        <h5 class="modal-title" id="modalDetailLabel{{ $siswa->id }}">Detail Tagihan -
-                                            {{ $siswa->nama }}</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <table class="table table-bordered table-sm">
-                                            <thead class="table-light">
+            @foreach ($siswas as $siswa)
+                @if ($siswa->tagihans->isNotEmpty())
+                    <div class="modal fade" id="modalDetail{{ $siswa->id }}" tabindex="-1"
+                        aria-labelledby="modalDetailLabel{{ $siswa->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="modalDetailLabel{{ $siswa->id }}">Detail Tagihan -
+                                        {{ $siswa->nama }}</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Kategori</th>
+                                                <th>Bulan</th>
+                                                <th>Nominal</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($siswa->tagihans as $tagihan)
                                                 <tr>
-                                                    <th>Kategori</th>
-                                                    <th>Bulan</th>
-                                                    <th>Nominal</th>
-                                                    <th>Status</th>
+                                                    <td>{{ $tagihan->kategori->kategori ?? '-' }}</td>
+                                                    <td>{{ $tagihan->bulan ?? '-' }}</td>
+                                                    <td>Rp{{ number_format($tagihan->nominal) }}</td>
+                                                    <td>
+                                                        @if ($tagihan->status === 'lunas')
+                                                            <span class="badge bg-success">Lunas</span>
+                                                        @else
+                                                            <span class="badge bg-warning text-dark">Belum Lunas</span>
+                                                        @endif
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($siswa->tagihans as $tagihan)
-                                                    <tr>
-                                                        <td>{{ $tagihan->kategori->kategori ?? '-' }}</td>
-                                                        <td>{{ $tagihan->bulan ?? '-' }}</td>
-                                                        <td>Rp{{ number_format($tagihan->nominal) }}</td>
-                                                        <td>
-                                                            @if ($tagihan->status === 'lunas')
-                                                                <span class="badge bg-success">Lunas</span>
-                                                            @else
-                                                                <span class="badge bg-warning text-dark">Belum Lunas</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-sm"
-                                            data-bs-dismiss="modal">Tutup</button>
-                                    </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        data-bs-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
-                    @endif
-                @endforeach
+                    </div>
+                @endif
+            @endforeach
 
-            </form>
-        </div>
+        </form>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -221,7 +221,7 @@
                 newWindow.document.write('<html><head><title>Print Tagihan</title>');
                 newWindow.document.write(
                     '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">'
-                    );
+                );
                 newWindow.document.write('</head><body>');
                 newWindow.document.write('<h3 class="text-center mb-4">Daftar Tagihan</h3>');
                 newWindow.document.write('<div class="container">');

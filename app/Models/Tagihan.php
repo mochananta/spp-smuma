@@ -34,4 +34,9 @@ class Tagihan extends Model
     {
         return $this->belongsTo(TahunAjaran::class);
     }
+
+    public function transaksiMidtrans()
+    {
+        return $this->belongsTo(TransaksiMidtrans::class);
+    }
 }
