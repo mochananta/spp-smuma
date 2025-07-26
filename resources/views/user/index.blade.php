@@ -328,7 +328,7 @@
             const content = document.querySelector('.table-responsive').innerHTML;
             const newWindow = window.open('', '', 'height=800,width=1200');
             newWindow.document.write('<html><head><title>Print Siswa</title>');
-            newWind ow.document.write(
+            newWindow.document.write(
                 '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">'
             );
             newWindow.document.write('</head><body>');

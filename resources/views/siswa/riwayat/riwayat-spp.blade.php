@@ -40,8 +40,7 @@
                 </tbody>
             </table>
         </div>
-
-
+        
         <div class="container mt-4">
             <h4 class="mb-4">Riwayat Pembayaran SPP</h4>
 

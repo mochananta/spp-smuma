@@ -75,8 +75,7 @@ class RiwayatController extends Controller
         return view('siswa.riwayat.riwayat-ujian', compact('tagihanUjian', 'riwayat'));
     }
 
-
-    public function total()  // ambil dari pembayaran
+    public function total()
     {
         $siswaId = Auth::user()->siswa->id;
 

@@ -24,7 +24,6 @@ class LaporanController extends Controller
                 ->sum('nominal');
         }
 
-        // ❗️Gunakan tanggal yang dibentuk dari bulan dan tahun filter
         $tanggal = \Carbon\Carbon::createFromDate($tahun, $bulan)->translatedFormat('F Y');
 
         return view('admin.laporan.spp', compact('bulan', 'tahun', 'tanggal', 'total'));
@@ -45,7 +44,6 @@ class LaporanController extends Controller
                 ->sum('nominal');
         }
 
-        // ❗️Gunakan tanggal yang dibentuk dari bulan dan tahun filter
         $tanggal = \Carbon\Carbon::createFromDate($tahun, $bulan)->translatedFormat('F Y');
 
         return view('admin.laporan.ujian', compact('bulan', 'tahun', 'tanggal', 'total'));
