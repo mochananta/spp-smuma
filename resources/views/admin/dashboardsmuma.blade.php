@@ -8,6 +8,7 @@
     <title>@yield('title', 'Dashboard Admin')</title>
 
     <!-- CSS -->
+    <link rel="icon" href="{{ asset('assets/img/logo smuma.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

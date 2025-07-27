@@ -6,6 +6,7 @@ use App\Models\Rombel;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use App\Models\TahunAjaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TagihanController extends Controller
@@ -39,7 +40,7 @@ class TagihanController extends Controller
                 'tahun_ajaran_id' => $request->tahun_ajaran_id,
                 'kelas' => $siswa->rombel->rombel,
                 'foto' => $siswa->foto,
-                'bulan' => now()->format('F'),
+                'bulan' => Carbon::now()->translatedFormat('F'),
                 'nominal' => $kategori->nominal,
             ]);
         }

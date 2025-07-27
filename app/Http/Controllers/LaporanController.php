@@ -2,29 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriPembayaran;
 use App\Models\Pembayaran;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
-    public function laporanspp()
+    public function laporanspp(Request $request)
     {
-        $tanggal = Carbon::now()->translatedFormat('d F Y');
-        $total = Pembayaran::whereHas('tagihan.kategori', function ($q) {
-            $q->where('kategori', 'spp');
-        })->sum('nominal');
+        $bulan = $request->get('bulan', date('m'));
+        $tahun = $request->get('tahun', date('Y'));
 
-        return view('admin.laporan.spp', compact('tanggal', 'total'));
+        $kategoriSpp = KategoriPembayaran::where('kategori', 'spp')->first();
+
+        $total = 0;
+        if ($kategoriSpp) {
+            $total = Pembayaran::where('kategori_pembayaran_id', $kategoriSpp->id)
+                ->whereMonth('tanggal_bayar', $bulan)
+                ->whereYear('tanggal_bayar', $tahun)
+                ->sum('nominal');
+        }
+
+        $tanggal = \Carbon\Carbon::createFromDate($tahun, $bulan)->translatedFormat('F Y');
+
+        return view('admin.laporan.spp', compact('bulan', 'tahun', 'tanggal', 'total'));
     }
 
-    public function laporanujian()
+    public function laporanUjian(Request $request)
     {
-        $tanggal = Carbon::now()->translatedFormat('d F Y');
-        $total = Pembayaran::whereHas('tagihan.kategori', function ($q) {
-            $q->where('kategori', 'ujian');
-        })->sum('nominal');
+        $bulan = $request->get('bulan', date('m'));
+        $tahun = $request->get('tahun', date('Y'));
 
-        return view('admin.laporan.ujian', compact('tanggal', 'total'));
+        $kategoriUjian = KategoriPembayaran::where('kategori', 'ujian')->first();
+
+        $total = 0;
+        if ($kategoriUjian) {
+            $total = Pembayaran::where('kategori_pembayaran_id', $kategoriUjian->id)
+                ->whereMonth('tanggal_bayar', $bulan)
+                ->whereYear('tanggal_bayar', $tahun)
+                ->sum('nominal');
+        }
+
+        $tanggal = \Carbon\Carbon::createFromDate($tahun, $bulan)->translatedFormat('F Y');
+
+        return view('admin.laporan.ujian', compact('bulan', 'tahun', 'tanggal', 'total'));
     }
 }

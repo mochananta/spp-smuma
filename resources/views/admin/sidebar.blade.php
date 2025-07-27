@@ -53,7 +53,7 @@
                                         <a class="nav-link" href="/tingkat">Tingkat</a>
                                         <a class="nav-link" href="/rombel">Rombel</a>
                                         <a class="nav-link" href="/kategori">Kategori Pembayaran</a>
-                                        <a class="nav-link" href="{{ route('siswas.index') }}">Data Siswa</a>
+                                        <a class="nav-link" href="{{ route(name: 'admin.siswa.siswa_index') }}">Data Siswa</a>
                                     </nav>
                                 </div>
 

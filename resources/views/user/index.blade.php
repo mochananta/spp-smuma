@@ -8,7 +8,7 @@
                 <button class="btn btn-success" type="button" id="btn-tambah-data">
                     <i class="fa fa-plus me-2"></i>Tambah Data
                 </button>
-                <button class="btn p-0 border-0 bg-transparent d-flex align-items-center" type="button"
+                {{-- <button class="btn p-0 border-0 bg-transparent d-flex align-items-center" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -16,8 +16,8 @@
                         <circle cx="12" cy="12" r="0.6" />
                         <circle cx="12" cy="19" r="0.6" />
                     </svg>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                </button> --}}
+                {{-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li class="dropdown-header">Opsi Tambahan</li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center gap-2" href="#" id="btn-import">
@@ -26,7 +26,7 @@
                             Import
                         </a>
                     </li>
-                </ul>
+                </ul> --}}
             </div>
         </div>
         <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data"
@@ -62,7 +62,7 @@
                     </svg>
                 </span>
                 <input type="text" class="form-control" placeholder="Cari..." aria-label="search"
-                    aria-describedby="search">
+                    aria-describedby="search" id="searchInput">
             </div>
 
             <div class="d-flex gap-2 ms-3">
@@ -328,7 +328,11 @@
             const content = document.querySelector('.table-responsive').innerHTML;
             const newWindow = window.open('', '', 'height=800,width=1200');
             newWindow.document.write('<html><head><title>Print Siswa</title>');
+<<<<<<< HEAD
             newWindow.document.write(
+=======
+            newWind ow.document.write(
+>>>>>>> ab12db0d5e049ba1bc2eeab59dd25db3decec185
                 '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">'
             );
             newWindow.document.write('</head><body>');
@@ -363,11 +367,24 @@
             html2pdf().set(opt).from(element).save();
         });
 
+<<<<<<< HEAD
         document.getElementById('searchInput').addEventListener('input', function() {
             const filter = this.value.toLowerCase();
             document.querySelectorAll('tbody tr').forEach(function(row) {
                 const rowText = row.innerText.toLowerCase();
                 row.style.display = rowText.includes(filter) ? '' : 'none';
+=======
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(function(row) {
+                    const rowText = row.textContent.toLowerCase();
+                    row.style.display = rowText.includes(filter) ? '' : 'none';
+                });
+>>>>>>> ab12db0d5e049ba1bc2eeab59dd25db3decec185
             });
         });
     </script>

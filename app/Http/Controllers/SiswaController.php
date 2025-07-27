@@ -27,7 +27,7 @@ class SiswaController extends Controller
         $tahunAjarans = TahunAjaran::all();
         $jurusans = Jurusan::all();
 
-        return view('admin.siswa.index', compact('siswas', 'rombels', 'tahunAjarans', 'jurusans'));
+        return view('admin.siswa.siswa_index', compact('siswas', 'rombels', 'tahunAjarans', 'jurusans'));
     }
 
     public function rombel()
@@ -97,7 +97,7 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+       // dd($request->all());
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'nis' => 'required|string|max:20|unique:siswas,nis',
@@ -138,8 +138,8 @@ class SiswaController extends Controller
 
             return redirect()->back()->with('success', 'Siswa dan user berhasil ditambahkan');
         } catch (\Exception $e) {
-            Log::error('Gagal simpan siswa: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan.');
+            echo $e->getMessage();
+            //return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan.');
         }
     }
 

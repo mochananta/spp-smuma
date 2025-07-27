@@ -71,7 +71,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/rombel', [RombelController::class, 'store'])->name('rombel.store');
     Route::get('/kategori', [KategoriPembayaranController::class, 'kategori'])->name('kategori.index');
     Route::post('/kategori', [KategoriPembayaranController::class, 'store'])->name('kategori.store');
-    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswas.index');
+    Route::get('/view/siswa', [SiswaController::class, 'index'])->name('admin.siswa.siswa_index');
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
     Route::post('/siswa/pindah', [SiswaController::class, 'pindah'])->name('siswa.pindah');
 
@@ -127,4 +127,4 @@ Route::post('/midtrans/callback', [SnapController::class, 'callback']);
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');  
