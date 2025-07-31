@@ -74,54 +74,63 @@
         <div class="card mt-3">
             <div class="card-body border-bottom py-3 px-4">
 
-                <div class="table-responsive">
-                    <table class="table table-vcenter card-table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" id="checkAllSiswa">
-                                </th>
-                                <th>ID</th>
-                                <th>Nama</th>
-                                <th>NIS</th>
-                                <th>Kelas</th>
-                                <th>Jenis Kelamin</th>
-                                <th class="text-center">Opsional</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($siswas as $siswa)
+                <form method="POST" action="{{ route('siswa.toAlumni') }}" id="form-alumni">
+                    @csrf
+
+                    <div class="d-flex justify-content-end mb-2">
+                        <button type="submit" class="btn btn-outline-warning btn-sm" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Pindahkan ke Alumni"
+                            onclick="return confirm('Pindahkan siswa yang dipilih ke alumni?')">
+                            <i class="fa fa-user-graduate"></i>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table align-middle">
+                            <thead>
                                 <tr>
-                                    <td><input type="checkbox" class="check-item" name="ids[]"
-                                            value="{{ $siswa->id }}"></td>
-                                    <td>{{ $siswa->id }}</td>
-                                    <td>{{ $siswa->nama }}</td>
-                                    <td>{{ $siswa->nis }}</td>
-                                    <td>{{ optional($siswa->rombel)->rombel ?? 'Belum dipilih' }}</td>
-                                    <td>{{ $siswa->jenis_kelamin }}</td>
-                                    <td class="text-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icon-tabler-info-circle btn-detail-siswa"
-                                            data-id="{{ $siswa->id }}" style="cursor:pointer;">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                            <path d="M12 9h.01" />
-                                            <path d="M11 12h1v4h1" />
-                                        </svg>
-                                    </td>
+                                    <th><input type="checkbox" id="checkAllSiswa"></th>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>NIS</th>
+                                    <th>Kelas</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th class="text-center">Detail</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach ($siswas as $siswa)
+                                    <tr>
+                                        <td><input type="checkbox" class="check-item" name="ids[]"
+                                                value="{{ $siswa->id }}"></td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $siswa->nama }}</td>
+                                        <td>{{ $siswa->nis }}</td>
+                                        <td>{{ optional($siswa->rombel)->rombel ?? 'Belum dipilih' }}</td>
+                                        <td>{{ $siswa->jenis_kelamin }}</td>
+                                        <td class="text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icon-tabler-info-circle btn-detail-siswa"
+                                                data-id="{{ $siswa->id }}" style="cursor:pointer;">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                                <path d="M12 9h.01" />
+                                                <path d="M11 12h1v4h1" />
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             </div>
         </div>
 
     </div>
-    <div class="modal fade" id="detailSiswaModal" tabindex="-1" aria-labelledby="detailSiswaModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="detailSiswaModal" tabindex="-1" aria-labelledby="detailSiswaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -374,6 +383,15 @@
                     row.style.display = rowText.includes(filter) ? '' : 'none';
                 });
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
         });
     </script>
 @endpush

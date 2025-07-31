@@ -54,6 +54,7 @@
                                         <a class="nav-link" href="/rombel">Rombel</a>
                                         <a class="nav-link" href="/kategori">Kategori Pembayaran</a>
                                         <a class="nav-link" href="{{ route('siswas.index') }}">Data Siswa</a>
+                                        <a class="nav-link" href="{{ route('admin.alumni.index')}}">Data Alumni</a>
                                     </nav>
                                 </div>
 

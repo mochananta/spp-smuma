@@ -5,8 +5,11 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h2 class="mb-0">Data Siswa</h2>
         </div>
+
+        {{-- Form Pindah dan Hapus Siswa --}}
         <form id="form-tindakan" method="POST" action="{{ route('siswa.pindah') }}">
             @csrf
+
             <div class="row mb-3 align-items-end">
                 <div class="col-md-3">
                     <label for="searchInput" class="form-label">Cari Siswa:</label>
@@ -30,9 +33,9 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label d-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Pindah</button>
+                    <button type="button" class="btn btn-danger w-100" id="btnDelete">Hapus</button>
                 </div>
             </div>
 
@@ -86,11 +89,19 @@
                 </table>
             </div>
         </form>
+
+        {{-- Form Delete --}}
+        <form id="form-delete" method="POST" action="{{ route('siswa.delete.massal') }}" style="display:none;">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="ids" id="delete_ids">
+        </form>
     </div>
 @endsection
 
 @push('myscript')
     <script>
+        // Filter pencarian
         document.getElementById('searchInput').addEventListener('keyup', function() {
             const keyword = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(row => {
@@ -99,9 +110,25 @@
             });
         });
 
+        // Centang semua checkbox
         document.getElementById('checkAll').addEventListener('change', function() {
             const status = this.checked;
             document.querySelectorAll('input[name="ids[]"]').forEach(cb => cb.checked = status);
+        });
+
+        // Hapus siswa massal
+        document.getElementById('btnDelete').addEventListener('click', function() {
+            const selected = Array.from(document.querySelectorAll('input[name="ids[]"]:checked'))
+                                  .map(cb => cb.value);
+            if (selected.length === 0) {
+                alert('Pilih minimal satu siswa untuk dihapus.');
+                return;
+            }
+            if (!confirm('Yakin ingin menghapus siswa terpilih? Data yang dihapus tidak bisa dikembalikan.')) {
+                return;
+            }
+            document.getElementById('delete_ids').value = selected.join(',');
+            document.getElementById('form-delete').submit();
         });
     </script>
 @endpush

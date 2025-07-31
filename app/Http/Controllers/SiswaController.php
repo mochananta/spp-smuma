@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\SiswaImport;
+use App\Models\Alumni;
 use Illuminate\Support\Facades\Log;
 use App\Models\Jurusan;
 use App\Models\KategoriPembayaran;
@@ -142,6 +143,50 @@ class SiswaController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan.');
         }
     }
+
+    public function deleteMassal(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+
+        foreach ($ids as $id) {
+            $siswa = Siswa::find($id);
+            if ($siswa) {
+                $siswa->user()->delete();
+                $siswa->delete();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Data siswa berhasil dihapus.');
+    }
+
+    public function pindahKeAlumni(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!$ids) {
+            return back()->with('error', 'Tidak ada siswa yang dipilih.');
+        }
+
+        foreach ($ids as $id) {
+            $siswa = Siswa::find($id);
+            if ($siswa) {
+                Alumni::create([
+                    'nama' => $siswa->nama,
+                    'nis' => $siswa->nis,
+                    'email' => $siswa->email,
+                    'rombel_id' => $siswa->rombel_id,
+                    'jurusan_id' => $siswa->jurusan_id,
+                    'jenis_kelamin' => $siswa->jenis_kelamin,
+                    'tahun_lulus' => now()->year,
+                ]);
+
+                $siswa->delete();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Siswa berhasil dipindahkan ke alumni.');
+    }
+
 
     public function updateRombelBatch(Request $request)
     {

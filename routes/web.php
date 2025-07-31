@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KategoriPembayaranController;
@@ -71,34 +72,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/rombel', [RombelController::class, 'store'])->name('rombel.store');
     Route::get('/kategori', [KategoriPembayaranController::class, 'kategori'])->name('kategori.index');
     Route::post('/kategori', [KategoriPembayaranController::class, 'store'])->name('kategori.store');
-    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswas.index');
+    Route::get('/view/siswa', [SiswaController::class, 'index'])->name('siswas.index');
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
     Route::post('/siswa/pindah', [SiswaController::class, 'pindah'])->name('siswa.pindah');
+    Route::delete('/siswa/delete-massal', [SiswaController::class, 'deleteMassal'])->name('siswa.delete.massal');
+    Route::post('/siswa/to-alumni', [SiswaController::class, 'pindahKeAlumni'])->name('siswa.toAlumni');
+
+    Route::get('/admin/alumni', [AlumniController::class, 'index'])->name('admin.alumni.index');
 
     Route::get('/laporanspp', [LaporanController::class, 'laporanspp'])->name('admin.laporan.spp');
     Route::get('/laporanujian', [LaporanController::class, 'laporanujian'])->name('admin.laporan.ujian');
 
 
-    // routes/web.php
     Route::get('/siswa/{id}/detail-a4', [SiswaController::class, 'detailA4'])->name('siswa.detailA4');
 
-    // Proses update data
     Route::put('/tahun_ajaran/{id}', [TahunAjaranController::class, 'update'])->name('tahun_ajaran.update');
     Route::put('/jurusan/{id}', [JurusanController::class, 'update'])->name('jurusan.update');
     Route::put('/tingkat/{id}', [TingkatController::class, 'update'])->name('tingkat.update');
     Route::put('/rombel/{id}', [RombelController::class, 'update'])->name('rombel.update');
-    // Proses update rombel secara massal
     Route::post('/siswa/update-rombel-batch', [SiswaController::class, 'updateRombelBatch'])->name('siswa.updateRombelBatch');
     Route::put('/kategori_pembayaran/{id}', [KategoriPembayaranController::class, 'update'])->name('kategori_pembayaran.update');
 
-    // Proses hapus data
     Route::delete('/tahun_ajaran/{id}', [TahunAjaranController::class, 'destroy'])->name('tahun_ajaran.destroy');
     Route::delete('/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
     Route::delete('/tingkat/{id}', [TingkatController::class, 'destroy'])->name('tingkat.destroy');
     Route::delete('/rombel/{id}', [RombelController::class, 'destroy'])->name('rombel.destroy');
     Route::delete('/kategori_pembayaran/{id}', [KategoriPembayaranController::class, 'destroy'])->name('kategori.destroy');
     Route::get('/riwayat-pembayaran/{id}', [PembayaranController::class, 'riwayat']);
-    
+
     Route::post('/pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/siswa/import', [SiswaController::class, 'importForm'])->name('siswa.importForm');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
