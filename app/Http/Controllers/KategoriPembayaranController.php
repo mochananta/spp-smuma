@@ -20,6 +20,7 @@ class KategoriPembayaranController extends Controller
         $validated = $request->validate([
             'kategori' => 'required|string|max:255',
             'nominal' => 'required|numeric|min:0',
+            'tahun_masuk' => 'required|numeric|min:0',
         ]);
 
 
@@ -27,6 +28,7 @@ class KategoriPembayaranController extends Controller
             $data = KategoriPembayaran::create([
                 'kategori' => $request->kategori,
                 'nominal' => $request->nominal,
+                'tahun_masuk' => $request->tahun_masuk,
             ]);
 
             if ($data) {
@@ -44,13 +46,15 @@ class KategoriPembayaranController extends Controller
         $request->validate([
             'kategori' => 'required|string|max:255',
             'nominal' => 'required|numeric|min:0',
+            'tahun_masuk' => 'required|numeric|min:0',
         ]);
 
         try {
             $kategori_pembayaran = KategoriPembayaran::findOrFail($id);
             $kategori_pembayaran->update([
                 'kategori' => $request->kategori,
-                'nominal' => $request->nominal, // pastikan ini ada
+                'nominal' => $request->nominal, 
+                'tahun_masuk' => $request->tahun_masuk, 
             ]);
 
             return redirect()->route('kategori.index')->with('success', 'Data kategori pembayaran berhasil diperbarui.');

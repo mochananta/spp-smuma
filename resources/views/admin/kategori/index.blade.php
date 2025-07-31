@@ -40,6 +40,7 @@
                             <th>ID</th>
                             <th>Kategori</th>
                             <th>Nominal</th>
+                            <th>Tahun Masuk</th>
                             <th>Opsional</th>
 
 
@@ -51,6 +52,7 @@
                                 <td>{{ $kategori_pembayaran->id }}</td>
                                 <td>{{ $kategori_pembayaran->kategori }}</td>
                                 <td>{{ $kategori_pembayaran->nominal }}</td>
+                                <td>{{ $kategori_pembayaran->tahun_masuk }}</td>
                                 <td>{{ $kategori_pembayaran->opsional }}
                                     <button type="button" class="btn btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#editKategoriModal{{ $kategori_pembayaran->id }}">

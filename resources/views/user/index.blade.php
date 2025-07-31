@@ -263,10 +263,10 @@
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <!-- <div class="col-md-6 mb-3">
                                 <label>Unggah Foto</label>
                                 <input type="file" name="foto" class="form-control" required>
-                            </div>
+                            </div> -->
                         </div>
 
                     </div>
@@ -328,11 +328,7 @@
             const content = document.querySelector('.table-responsive').innerHTML;
             const newWindow = window.open('', '', 'height=800,width=1200');
             newWindow.document.write('<html><head><title>Print Siswa</title>');
-<<<<<<< HEAD
             newWindow.document.write(
-=======
-            newWind ow.document.write(
->>>>>>> ab12db0d5e049ba1bc2eeab59dd25db3decec185
                 '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">'
             );
             newWindow.document.write('</head><body>');
@@ -367,13 +363,6 @@
             html2pdf().set(opt).from(element).save();
         });
 
-<<<<<<< HEAD
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            document.querySelectorAll('tbody tr').forEach(function(row) {
-                const rowText = row.innerText.toLowerCase();
-                row.style.display = rowText.includes(filter) ? '' : 'none';
-=======
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('input', function() {
@@ -384,7 +373,6 @@
                     const rowText = row.textContent.toLowerCase();
                     row.style.display = rowText.includes(filter) ? '' : 'none';
                 });
->>>>>>> ab12db0d5e049ba1bc2eeab59dd25db3decec185
             });
         });
     </script>

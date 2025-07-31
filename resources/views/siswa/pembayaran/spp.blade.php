@@ -70,7 +70,7 @@
                 </table>
 
                 <div class="text-end">
-                    <button type="button" onclick="bayarSekarang()" class="btn btn-primary">Bayar Sekarang</button>
+                    <button type="button" onclick="bayarSekarang()" class="btn btn-primary">Bayar Sekarang</button
                 </div>
             </form>
         @endif
@@ -78,7 +78,8 @@
 @endsection
 
 <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-    data-client-key="{{ config('midtrans.client_key') }}"></script>
+    data-client-key="{{ config('midtrans.client_key') }}">
+</script>
 
 <script>
     function bayarSekarang() {
@@ -117,7 +118,7 @@
                         onSuccess: function(result) {
                             alert("Pembayaran sukses!");
                             console.log(result);
-                            location.reload(); // reload untuk update tampilan
+                            location.reload(); 
                         },
                         onPending: function(result) {
                             alert("Menunggu pembayaran...");
@@ -139,7 +140,6 @@
             });
     }
 </script>
-
 
 <script>
     function hitungTotal() {

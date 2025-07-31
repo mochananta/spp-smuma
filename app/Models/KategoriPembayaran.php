@@ -10,7 +10,8 @@ class KategoriPembayaran extends Model
     use HasFactory;
     protected $fillable = [
         'kategori',
-        'nominal'
+        'nominal',
+        'tahun_masuk',
     ];
 
     public function tagihans()

@@ -22,6 +22,7 @@ class SnapController extends Controller
 
     public function bayar(Request $request)
     {
+        //membuat token pembayaran midtrans dari tagihan yang dipilih dan menyimpan ke database
         $tagihan_ids = $request->tagihan_ids;
         $total = Tagihan::whereIn('id', $tagihan_ids)->sum('nominal');
 
@@ -61,6 +62,7 @@ class SnapController extends Controller
         if ($hashed !== $request->signature_key) {
             return response()->json(['message' => 'Invalid signature'], 403);
         }
+        //
 
         // Ambil transaksi
         $transaksi = TransaksiMidtrans::where('order_id', $request->order_id)->first();

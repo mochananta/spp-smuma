@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid mt-4">
         <div class="d-flex align-items-center mb-4">
-            <h2 class="mb-0">Kirim Tagihan</h2>
+            <h2 class="mb-0">Buat Tagihan</h2>
         </div>
 
         <form method="POST" action="{{ route('kirim_tagihan.store') }}">
@@ -18,7 +18,7 @@
                         style="background-color: #a8f5a2; color: black; font-size: 14px;">0</span>
                     <button type="submit" class="btn btn-sm d-flex align-items-center"
                         style="background-color: #d1e7ff; color: #003366;">
-                        <i class="fa fa-paper-plane me-1"></i> Kirim Tagihan
+                        <i class="fa fa-paper-plane me-1"></i> Buat Tagihan
                     </button>
                 </div>
 
