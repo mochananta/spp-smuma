@@ -75,7 +75,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/view/siswa', [SiswaController::class, 'index'])->name('siswas.index');
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
     Route::post('/siswa/pindah', [SiswaController::class, 'pindah'])->name('siswa.pindah');
-    Route::delete('/siswa/delete-massal', [SiswaController::class, 'deleteMassal'])->name('siswa.delete.massal');
+    Route::post('/siswa/nonaktifkan', [SiswaController::class, 'nonaktifkan'])->name('siswa.nonaktifkan');
     Route::post('/siswa/to-alumni', [SiswaController::class, 'pindahKeAlumni'])->name('siswa.toAlumni');
 
     Route::get('/admin/alumni', [AlumniController::class, 'index'])->name('admin.alumni.index');

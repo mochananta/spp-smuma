@@ -35,21 +35,21 @@
                 </div>
                 <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn btn-primary w-100">Pindah</button>
-                    <button type="button" class="btn btn-danger w-100" id="btnDelete">Hapus</button>
+                    <button type="button" class="btn btn-warning w-100" id="btnNonaktifkan">Nonaktifkan</button>
                 </div>
             </div>
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
                     <thead>
-                        <tr>
-                            <th><input type="checkbox" id="checkAll"></th>
-                            <th>No</th>
-                            <th>NIS</th>
-                            <th>Nama</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Informasi</th>
-                        </tr>
+                        <th><input type="checkbox" id="checkAll"></th>
+                        <th>No</th>
+                        <th>NIS</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Rombel</th>
+                        <th>Status</th>
+                        <th>Informasi</th>
                     </thead>
                     <tbody>
                         @foreach ($siswas as $siswa)
@@ -59,6 +59,14 @@
                                 <td>{{ $siswa->nis }}</td>
                                 <td>{{ $siswa->nama }}</td>
                                 <td>{{ $siswa->jenis_kelamin }}</td>
+                                <td>{{ $siswa->rombel->rombel ?? '-' }}</td>
+                                <td>
+                                    @if ($siswa->status == 'aktif')
+                                        <span class="badge bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge bg-danger">Tidak Aktif</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm text-primary" data-bs-toggle="modal"
                                         data-bs-target="#detailSiswa{{ $siswa->id }}">
@@ -77,9 +85,11 @@
                                         <div class="modal-body">
                                             <p><strong>NIS:</strong> {{ $siswa->nis }}</p>
                                             <p><strong>Nama:</strong> {{ $siswa->nama }}</p>
+                                            <p><strong>Email:</strong> {{ $siswa->email }}</p>
+                                            <p><strong>agama:</strong> {{ $siswa->agama }}</p>
                                             <p><strong>Jenis Kelamin:</strong> {{ $siswa->jenis_kelamin }}</p>
-                                            <p><strong>Rombel:</strong> {{ $siswa->rombel->rombel ?? '-' }}</p>
                                             <p><strong>Jurusan:</strong> {{ $siswa->rombel->jurusan->jurusan ?? '-' }}</p>
+                                            <p><strong>Status:</strong> {{ $siswa->status }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -89,20 +99,13 @@
                 </table>
             </div>
         </form>
-
-        {{-- Form Delete --}}
-        <form id="form-delete" method="POST" action="{{ route('siswa.delete.massal') }}" style="display:none;">
-            @csrf
-            @method('DELETE')
-            <input type="hidden" name="ids" id="delete_ids">
-        </form>
     </div>
 @endsection
 
 @push('myscript')
     <script>
         // Filter pencarian
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             const keyword = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(row => {
                 const text = row.textContent.toLowerCase();
@@ -111,24 +114,41 @@
         });
 
         // Centang semua checkbox
-        document.getElementById('checkAll').addEventListener('change', function() {
+        document.getElementById('checkAll').addEventListener('change', function () {
             const status = this.checked;
             document.querySelectorAll('input[name="ids[]"]').forEach(cb => cb.checked = status);
         });
 
-        // Hapus siswa massal
-        document.getElementById('btnDelete').addEventListener('click', function() {
+        document.getElementById('btnNonaktifkan').addEventListener('click', function () {
             const selected = Array.from(document.querySelectorAll('input[name="ids[]"]:checked'))
-                                  .map(cb => cb.value);
+                .map(cb => cb.value);
             if (selected.length === 0) {
-                alert('Pilih minimal satu siswa untuk dihapus.');
+                alert('Pilih minimal satu siswa untuk dinonaktifkan.');
                 return;
             }
-            if (!confirm('Yakin ingin menghapus siswa terpilih? Data yang dihapus tidak bisa dikembalikan.')) {
+            if (!confirm('Yakin ingin menonaktifkan siswa terpilih?')) {
                 return;
             }
-            document.getElementById('delete_ids').value = selected.join(',');
-            document.getElementById('form-delete').submit();
+
+            // Kirim ke route nonaktifkan
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route('siswa.nonaktifkan') }}';
+
+            const csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = '{{ csrf_token() }}';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'ids';
+            input.value = selected.join(',');
+
+            form.appendChild(csrf);
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
         });
     </script>
 @endpush

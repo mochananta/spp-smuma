@@ -23,7 +23,10 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        $siswas = Siswa::with(['rombel', 'jurusan', 'tahunAjaran', 'pembayarans'])->get();
+        $siswas = Siswa::with(['rombel.jurusan', 'jurusan', 'tahunAjaran', 'pembayarans'])
+            ->orderByRaw("status = 'aktif' DESC")
+            ->get();
+
         $rombels = Rombel::all();
         $tahunAjarans = TahunAjaran::all();
         $jurusans = Jurusan::all();
@@ -144,19 +147,12 @@ class SiswaController extends Controller
         }
     }
 
-    public function deleteMassal(Request $request)
+    public function nonaktifkan(Request $request)
     {
         $ids = explode(',', $request->ids);
+        Siswa::whereIn('id', $ids)->update(['status' => 'tidak aktif']);
 
-        foreach ($ids as $id) {
-            $siswa = Siswa::find($id);
-            if ($siswa) {
-                $siswa->user()->delete();
-                $siswa->delete();
-            }
-        }
-
-        return redirect()->back()->with('success', 'Data siswa berhasil dihapus.');
+        return redirect()->back()->with('success', 'Siswa berhasil dinonaktifkan.');
     }
 
     public function pindahKeAlumni(Request $request)
@@ -186,7 +182,6 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Siswa berhasil dipindahkan ke alumni.');
     }
-
 
     public function updateRombelBatch(Request $request)
     {

@@ -64,4 +64,13 @@ class Siswa extends Model
     {
         return $this->hasOneThrough(Tingkat::class, Rombel::class, 'id', 'tingkat', 'rombel_id', 'id');
     }
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'aktif');
+    }
+
+    public function scopeTidakAktif($query)
+    {
+        return $query->where('status', 'tidak aktif');
+    }
 }

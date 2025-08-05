@@ -30,9 +30,10 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('nama_ortu');
             $table->string('telepon_ortu', 20);
-            $table->string('foto')->nullable(); 
+            $table->string('foto')->nullable();
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->string('alamat')->nullable();
+            $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
             $table->timestamps();
         });
     }
